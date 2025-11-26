@@ -2,42 +2,49 @@ package com.example.proyectofinal.presentation.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyectofinal.domain.repository.UserRepository
+import com.example.proyectofinal.domain.usecase.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val repo: UserRepository
+    private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
-    var isLoading = false
-        private set
+    private val _state = MutableStateFlow(RegisterState())
+    val state: StateFlow<RegisterState> = _state
 
-    var errorMessage: String? = null
-        private set
+    fun onEvent(event: RegisterEvent) {
+        when(event) {
 
-    fun register(
-        user: String,
-        pass: String,
-        onSuccess: () -> Unit
-    ) {
+            is RegisterEvent.UsuarioChanged ->
+                _state.value = _state.value.copy(usuario = event.value)
+
+            is RegisterEvent.ClaveChanged ->
+                _state.value = _state.value.copy(clave = event.value)
+
+            RegisterEvent.RegisterClicked -> register()
+        }
+    }
+
+    private fun register() {
         viewModelScope.launch {
-            try {
-                isLoading = true
-                val result = repo.register(user, pass)
+            _state.value = _state.value.copy(isLoading = true)
 
-                if (result != null) {
-                    onSuccess()
-                } else {
-                    errorMessage = "No se pudo crear el usuario"
-                }
-            } catch (e: Exception) {
-                errorMessage = e.message ?: "Error desconocido"
-            } finally {
-                isLoading = false
-            }
+            val result = registerUseCase(
+                _state.value.usuario,
+                _state.value.clave
+            )
+
+            _state.value = _state.value.copy(
+                isLoading = false,
+                success = result != null,
+                error = if (result == null) "Error al registrar" else null
+            )
         }
     }
 }
+
