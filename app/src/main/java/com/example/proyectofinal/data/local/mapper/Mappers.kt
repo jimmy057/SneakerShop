@@ -1,10 +1,10 @@
 package com.example.proyectofinal.data.local.mapper
 
 import com.example.proyectofinal.data.local.Entity.LocalUser
-import com.example.proyectofinal.data.remote.dto.UsuarioDto
+import com.example.proyectofinal.data.remote.response.UserResponse
 import com.example.proyectofinal.domain.model.User
 
-fun UsuarioDto.toLocalUser(): LocalUser {
+fun UserResponse.toLocalUser(): LocalUser {
     return LocalUser(
         id = usuarioId,
         nombre = userName,
