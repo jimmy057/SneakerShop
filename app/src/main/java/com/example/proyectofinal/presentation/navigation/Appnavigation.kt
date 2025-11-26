@@ -12,27 +12,36 @@ import com.example.proyectofinal.presentation.register.RegisterScreen
 fun AppNav() {
     val nav = rememberNavController()
 
-    NavHost(navController = nav, startDestination = "login") {
+    NavHost(navController = nav, startDestination = Routes.Login) {
 
-        composable("login") {
+        composable(Routes.Login) {
             LoginScreen(
-                onNavigateToRegister = { nav.navigate("register") },
-                onSuccess = { nav.navigate("home") }
+                onNavigateToRegister = { nav.navigate(Routes.Register) },
+                onSuccess = {
+                    nav.navigate(Routes.Home) {
+                        popUpTo(Routes.Login) { inclusive = true }
+                    }
+                }
             )
         }
 
-        composable("register") {
+        composable(Routes.Register) {
             RegisterScreen(
                 onBack = { nav.popBackStack() },
-                onSuccess = { nav.navigate("home") }
+                onSuccess = {
+                    nav.navigate(Routes.Home) {
+                        popUpTo(Routes.Login) { inclusive = true }
+                    }
+                }
             )
         }
 
-        composable("home") {
+        composable(Routes.Home) {
             HomeScreen(
                 onLogout = {
-                    nav.popBackStack()
-                    nav.navigate("login")
+                    nav.navigate(Routes.Login) {
+                        popUpTo(Routes.Home) { inclusive = true }
+                    }
                 }
             )
         }
