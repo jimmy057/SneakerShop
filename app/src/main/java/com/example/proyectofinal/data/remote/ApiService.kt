@@ -1,4 +1,4 @@
-package com.example.proyectofinal.data.remote.api
+package com.example.proyectofinal.data.remote
 
 import com.example.proyectofinal.data.remote.request.UserRequest
 import com.example.proyectofinal.data.remote.response.UserResponse
@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface UsuariosApi {
-
     @GET("Usuarios")
     suspend fun getUsuarios(): List<UserResponse>
 

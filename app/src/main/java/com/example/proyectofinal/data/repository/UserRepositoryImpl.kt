@@ -3,7 +3,7 @@ package com.example.proyectofinal.data.repository
 import com.example.proyectofinal.data.local.Entity.LocalUser
 import com.example.proyectofinal.data.local.Dao.UserDao
 import com.example.proyectofinal.data.local.mapper.toLocalUser
-import com.example.proyectofinal.data.remote.api.UsuariosApi
+import com.example.proyectofinal.data.remote.UsuariosApi
 import com.example.proyectofinal.data.remote.request.UserRequest
 import com.example.proyectofinal.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow

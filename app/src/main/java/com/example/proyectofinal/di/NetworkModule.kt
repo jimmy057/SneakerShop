@@ -1,6 +1,6 @@
 package com.example.proyectofinal.di
 
-import com.example.proyectofinal.data.remote.api.UsuariosApi
+import com.example.proyectofinal.data.remote.UsuariosApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
